@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>佛山旅行规划 - 双方案对比</title>
+<style>
+:root {
+    --bg: #f5f0eb;
+    --card-bg: #ffffff;
+    --accent-a: #c0392b;
+    --accent-b: #1a6fb5;
+    --text: #2c3e50;
+    --text-secondary: #5d6d7e;
+    --border: #e0d5c7;
+    --timeline-line: #d5c4b1;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 40px 20px 36px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(231,76,60,0.1) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(52,152,219,0.1) 0%, transparent 60%);
+    animation: glow 8s ease-in-out infinite alternate;
+}
+@keyframes glow { 0%{transform:translate(0,0)} 100%{transform:translate(-2%,2%)} }
+.hero h1 { font-size:2em; font-weight:700; letter-spacing:0.04em; position:relative; z-index:1; }
+.hero .subtitle { font-size:1em; color:rgba(255,255,255,0.7); margin-top:6px; position:relative; z-index:1; }
+
+/* Tab switcher */
+.tab-bar {
+    display: flex; max-width: 820px; margin: 0 auto; padding: 0 20px; gap: 0; position: sticky; top: 0; z-index: 100;
+}
+.tab-btn {
+    flex: 1; padding: 14px 20px; border: none; cursor: pointer; font-size: 1em; font-weight: 700;
+    text-align: center; transition: all 0.25s;
+    background: #e8e3dc; color: var(--text-secondary);
+    border-radius: 12px 12px 0 0;
+}
+.tab-btn.plan-a { background: #f5eeea; color: #a04030; }
+.tab-btn.plan-b { background: #eaf2f8; color: #1a5280; }
+.tab-btn.plan-a.active { background: #fff; color: var(--accent-a); box-shadow: 0 -2px 8px rgba(192,57,43,0.12); }
+.tab-btn.plan-b.active { background: #fff; color: var(--accent-b); box-shadow: 0 -2px 8px rgba(26,111,181,0.12); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.sub-tab-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+.sub-tab-btn { flex: 1; padding: 10px 16px; border: 2px solid #c0d8e8; cursor: pointer; font-size: 0.9em; font-weight: 600; text-align: center; border-radius: 10px; transition: all 0.25s; background: #fff; color: var(--text-secondary); }
+.sub-tab-btn:hover { background: #eaf4fb; }
+.sub-tab-btn.active { background: var(--accent-b); color: #fff; border-color: var(--accent-b); }
+.sub-tab-content { display: none; }
+.sub-tab-content.active { display: block; }
+
+.container { max-width: 820px; margin: 0 auto; padding: 0 20px 40px; background: #fff; border-radius: 0 0 12px 12px; }
+
+/* Compare bar */
+.compare-bar {
+    max-width: 820px; margin: 24px auto 0; padding: 0 20px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.compare-card {
+    border-radius: 12px; padding: 20px; text-align: center; border: 2px solid transparent;
+}
+.compare-card.plan-a-card { background: #fdf5f3; border-color: #f0c4bd; }
+.compare-card.plan-b-card { background: #eaf4fb; border-color: #b8d4ed; }
+.compare-card .cinema-name { font-size: 1.15em; font-weight: 700; margin-bottom: 4px; }
+.compare-card.plan-a-card .cinema-name { color: var(--accent-a); }
+.compare-card.plan-b-card .cinema-name { color: var(--accent-b); }
+.compare-card .movie-time { font-size: 1.3em; font-weight: 700; margin: 6px 0; }
+.compare-card.plan-a-card .movie-time { color: var(--accent-a); }
+.compare-card.plan-b-card .movie-time { color: var(--accent-b); }
+.compare-card .compare-row { display: flex; justify-content: space-around; margin-top: 10px; font-size: 0.85em; color: var(--text-secondary); }
+.compare-card .compare-row span { display: flex; flex-direction: column; align-items: center; }
+.compare-card .compare-row .num { font-size: 1.3em; font-weight: 700; }
+.compare-card.plan-a-card .compare-row .num { color: var(--accent-a); }
+.compare-card.plan-b-card .compare-row .num { color: var(--accent-b); }
+
+/* Sections */
+.section { margin-top: 24px; }
+.section-title { font-size:1.2em; font-weight:700; margin-bottom:14px; padding-left:12px; display:flex; align-items:center; gap:8px; }
+.plan-a .section-title { border-left: 4px solid var(--accent-a); }
+.plan-b .section-title { border-left: 4px solid var(--accent-b); }
+
+/* Info cards */
+.info-card { border-radius:12px; padding:18px 20px; margin-bottom:14px; border:1px solid var(--border); }
+.plan-a .info-card { background: #fefefe; }
+.plan-b .info-card { background: #fefefe; }
+.info-card h3 { font-size:0.95em; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.plan-a .info-card h3 { color: var(--accent-a); }
+.plan-b .info-card h3 { color: var(--accent-b); }
+.info-row { display:flex; gap:8px; margin-bottom:5px; font-size:0.88em; }
+.info-label { color:var(--text-secondary); min-width:52px; flex-shrink:0; }
+.info-value { color:var(--text); }
+
+.feature-chips { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; margin-top:10px; }
+.feature-chip { background:#f8f9fa; border-radius:8px; padding:8px 12px; font-size:0.82em; color:var(--text-secondary); display:flex; align-items:center; gap:5px; }
+.feature-chip .icon { font-size:1.1em; }
+
+/* Timeline */
+.timeline { position:relative; padding-left:34px; }
+.timeline::before { content:''; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--timeline-line); }
+.plan-a .timeline::before { background: #e8c8c0; }
+.plan-b .timeline::before { background: #c0d8e8; }
+.timeline-item {
+    position:relative; margin-bottom:20px; border-radius:12px; padding:18px 20px;
+    border:1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s;
+}
+.plan-a .timeline-item { background: #fefcfb; }
+.plan-b .timeline-item { background: #fcfdfe; }
+.timeline-item:hover { transform: translateX(3px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+.timeline-item::before {
+    content:''; position:absolute; left:-26px; top:24px; width:11px; height:11px; border-radius:50%;
+    border:3px solid var(--bg);
+}
+.plan-a .timeline-item::before { background: var(--accent-a); box-shadow: 0 0 0 2px var(--accent-a); }
+.plan-b .timeline-item::before { background: var(--accent-b); box-shadow: 0 0 0 2px var(--accent-b); }
+.timeline-item.highlight::before { animation: pulse 2s infinite; }
+.plan-a .timeline-item.highlight::before { background: #e74c3c; box-shadow: 0 0 0 4px rgba(231,76,60,0.25); }
+.plan-b .timeline-item.highlight::before { background: #3498db; box-shadow: 0 0 0 4px rgba(52,152,219,0.25); }
+@keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 2px rgba(0,0,0,0.15); }
+    50% { box-shadow: 0 0 0 6px rgba(0,0,0,0.05); }
+}
+.timeline-time { font-weight:700; font-size:0.98em; margin-bottom:4px; }
+.plan-a .timeline-time { color: var(--accent-a); }
+.plan-b .timeline-time { color: var(--accent-b); }
+.timeline-title { font-weight:700; font-size:1.05em; margin-bottom:4px; }
+.timeline-desc { color:var(--text-secondary); font-size:0.88em; line-height:1.75; }
+.timeline-desc strong { color:var(--text); }
+
+.tag { display:inline-block; padding:2px 9px; border-radius:10px; font-size:0.74em; font-weight:600; margin-right:5px; margin-top:5px; }
+.tag.food { background:#fdf2e9; color:#b9770e; }
+.tag.scenic { background:#eafaf1; color:#1e8449; }
+.tag.movie { background:#f4ecf7; color:#7d3c98; }
+.tag.hotel { background:#eaf2f8; color:#1f618d; }
+.tag.transport { background:#fdedec; color:#b03a2e; }
+
+.route-map { background:#f8f9fa; border-radius:10px; padding:14px 18px; margin-top:12px; font-size:0.85em; color:var(--text-secondary); line-height:2; }
+.plan-a .route-map span.arrow { color: var(--accent-a); margin:0 5px; font-weight:700; }
+.plan-b .route-map span.arrow { color: var(--accent-b); margin:0 5px; font-weight:700; }
+
+.tip-card { border-radius:12px; padding:18px 20px; border:1px solid var(--border); margin-bottom:14px; }
+.plan-a .tip-card { background: #fefcfb; }
+.plan-b .tip-card { background: #fcfdfe; }
+.tip-card h3 { font-size:0.95em; margin-bottom:8px; }
+.plan-a .tip-card h3 { color: var(--accent-a); }
+.plan-b .tip-card h3 { color: var(--accent-b); }
+.tip-card ul { list-style:none; padding:0; }
+.tip-card li { padding:4px 0; padding-left:18px; position:relative; color:var(--text-secondary); font-size:0.88em; }
+.tip-card li::before { content:'▸'; position:absolute; left:0; font-size:0.75em; top:5px; }
+.plan-a .tip-card li::before { color: var(--accent-a); }
+.plan-b .tip-card li::before { color: var(--accent-b); }
+
+.highlight-box { border-radius:12px; padding:18px 20px; margin-top:14px; }
+.plan-a .highlight-box { background: linear-gradient(135deg, #fdf2e9, #fef9e7); border:1px solid #f0c78e; }
+.plan-b .highlight-box { background: linear-gradient(135deg, #eaf4fb, #f0f7fc); border:1px solid #b8d4ed; }
+.highlight-box h3 { margin-bottom:6px; }
+.plan-a .highlight-box h3 { color: #b9770e; }
+.plan-b .highlight-box h3 { color: #1a6fb5; }
+.plan-a .highlight-box p { color: #7d6608; font-size:0.88em; }
+.plan-b .highlight-box p { color: #1a5280; font-size:0.88em; }
+
+/* vs divider */
+.vs-divider { text-align:center; padding: 16px 0; font-size:1.3em; font-weight:700; color: #999; letter-spacing:0.1em; }
+
+footer { text-align:center; padding:30px 20px; color:var(--text-secondary); font-size:0.8em; }
+
+@media (max-width: 600px) {
+    .hero h1 { font-size:1.4em; }
+    .compare-bar { grid-template-columns: 1fr; }
+    .feature-chips { grid-template-columns: 1fr; }
+    .timeline { padding-left: 26px; }
+    .timeline-item::before { left:-19px; width:9px; height:9px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>🏯 佛山一日旅行规划</h1>
+    <div class="subtitle">两套方案对比 · 同酒店（禅城祖庙）· 不同影院</div>
+</div>
+
+<!-- 对比总览 -->
+<div class="compare-bar">
+    <div class="compare-card plan-a-card">
+        <div class="cinema-name">🎬 方案一：英皇电影城</div>
+        <div style="font-size:0.82em;color:#888;">岭南站 F6（祖庙）</div>
+        <div class="movie-time">17:25 — 20:17</div>
+        <div class="compare-row">
+            <span><span class="num">~50min</span>返程到影院</span>
+            <span><span class="num">0min</span>观影后回酒店</span>
+            <span><span class="num">IMAX</span>+VIP</span>
+        </div>
+    </div>
+    <div class="compare-card plan-b-card">
+        <div class="cinema-name">🎬 方案二：CGV影城</div>
+        <div style="font-size:0.82em;color:#888;">海骏达广场 3F（容桂）</div>
+        <div class="movie-time">17:20 / 20:30 两场可选</div>
+        <div class="compare-row">
+            <span><span class="num">~25min</span>景点→影院</span>
+            <span><span class="num">~50min</span>观影后回酒店</span>
+            <span><span class="num">IMAX</span>+4DS+GOLD</span>
+        </div>
+    </div>
+</div>
+
+<!-- Tab switcher -->
+<div class="tab-bar">
+    <button class="tab-btn plan-a active" onclick="switchTab('plan-a')">🔴 方案一 · 英皇电影城（岭南站）</button>
+    <button class="tab-btn plan-b" onclick="switchTab('plan-b')">🔵 方案二 · CGV影城（海骏达 IMAX）</button>
+</div>
+
+<!-- ==================== PLAN A ==================== -->
+<div class="tab-content plan-a active" id="plan-a">
+<div class="container">
+
+    <div class="section">
+        <div class="section-title"><span class="icon">📍</span> 关键地点信息</div>
+
+        <div class="info-card">
+            <h3>🎬 英皇电影城（佛山岭南站店）</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市禅城区<strong>祖庙路29号 NOVA岭南站 F6</strong></span></div>
+            <div class="info-row"><span class="info-label">地铁</span><span class="info-value">广佛线 <strong>祖庙站 C/D 出口</strong>，直达商场</span></div>
+            <div class="info-row"><span class="info-label">电话</span><span class="info-value">0757-82030620</span></div>
+            <div class="info-row"><span class="info-label">区位</span><span class="info-value">毗邻<strong>祖庙</strong>（4A景区）及<strong>佛山岭南天地</strong></span></div>
+            <div class="feature-chips">
+                <div class="feature-chip"><span class="icon">🎥</span> 6 激光影厅 + 1 VIP 厅</div>
+                <div class="feature-chip"><span class="icon">🪑</span> 1053 座</div>
+                <div class="feature-chip"><span class="icon">💡</span> 巴可激光 + SONY 4K 双机</div>
+                <div class="feature-chip"><span class="icon">🔊</span> JBL 音响 + Q-SYS 功放</div>
+                <div class="feature-chip"><span class="icon">🛋️</span> 全皮质座椅</div>
+                <div class="feature-chip"><span class="icon">🍸</span> VIP 厅酒吧休息区</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>🍔 汉堡王（祖庙铂顿广场店）</h3>
+            <div class="info-row"><span class="info-label">位置</span><span class="info-value">祖庙铂顿广场内，距影院步行 3-5 分钟</span></div>
+        </div>
+
+        <div class="info-card">
+            <h3>🏯 清晖园 + ⛰️ 顺峰山公园</h3>
+            <div class="info-row"><span class="info-label">清晖园</span><span class="info-value">顺德大良清晖路23号，岭南四大名园之一，全国重点文保</span></div>
+            <div class="info-row"><span class="info-label">顺峰山</span><span class="info-value">顺德大良南国东路，距清晖园仅 4.6km / 10 分钟</span></div>
+            <div class="info-row"><span class="info-label">交通</span><span class="info-value">🚗 驾车 40-50min | 🚇 地铁约 1h20min（祖庙→东平换3号线→大良钟楼）</span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">🗺️</span> 路线总览</div>
+        <div class="route-map">
+            祖庙站<span class="arrow">→</span>酒店放行李<span class="arrow">→</span>Brunch<span class="arrow">→</span>🚗 40-50min 往顺德<span class="arrow">→</span>清晖园<span class="arrow">→</span>🚗 10min<span class="arrow">→</span>顺峰山<span class="arrow">→</span>🚗 40-50min 返祖庙<span class="arrow">→</span>🍔汉堡王<span class="arrow">→</span>🎬 17:25-20:17<span class="arrow">→</span>🍽️ 20:17 晚餐
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">⏱️</span> 详细时间轴</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 抵达佛山</div>
+                <div class="timeline-title">🚆 出站 → 酒店入住、放行李</div>
+                <div class="timeline-desc">抵达<strong>祖庙站</strong>（广佛线直达），到酒店放下行李。酒店选在祖庙/岭南天地周边，步行范围内可达影院与 Brunch。</div>
+                <span class="tag hotel">酒店</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 约 11:00 — 12:00</div>
+                <div class="timeline-title">🍳 地道佛山 Brunch</div>
+                <div class="timeline-desc">
+                    <strong>▸ 蔡澜港式点心（岭南站 LG1）</strong>— 人均 ¥70，肠粉、粥品、酥皮山楂叉烧包，10:00 起营业<br>
+                    <strong>▸ 云浮石磨肠粉（福禄路）</strong>— 老店，人均不到 ¥10，地道佛山味
+                </div>
+                <span class="tag food">Brunch</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">中午 · 12:00 出发</div>
+                <div class="timeline-title">出发前往顺德 — 清晖园 & 顺峰山</div>
+                <div class="timeline-desc">
+                    <strong>🚗 驾车：</strong>祖庙→顺德大良，约 30-40km，约 <strong>40-50 分钟</strong><br>
+                    <strong>🚇 地铁：</strong>广佛线祖庙站→东平站（换乘3号线）→大良钟楼站 E 口，步行 450m 到清晖园，约 <strong>1h20min</strong>（18 站，¥8-10）<br>
+                    <strong>游玩：</strong>清晖园 1.5h + 顺峰山 1.5h = 合计 <strong>3 小时</strong>
+                </div>
+                <span class="tag scenic">景点</span>
+                <span class="tag transport">驾车 40-50min</span>
+                <span class="tag transport">地铁 1h20min</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 12:50 — 14:20</div>
+                <div class="timeline-title">🏯 清晖园游览</div>
+                <div class="timeline-desc">岭南园林代表作，亭台楼阁、假山池沼、百年古树，全国重点文保单位。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 14:30 — 16:00</div>
+                <div class="timeline-title">⛰️ 顺峰山公园游览</div>
+                <div class="timeline-desc">从清晖园驾车 10 分钟即达。湖光山色，步道平缓，顺峰山牌坊气势恢宏。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 16:00 — 16:50</div>
+                <div class="timeline-title">🚗 返程 → 祖庙 · 英皇电影城</div>
+                <div class="timeline-desc">
+                    从顺德大良驾车返回禅城祖庙，约 <strong>40-50 分钟</strong>。途经<strong>铂顿广场汉堡王</strong>买好鸡条/鸡翅，上岭南站 6 楼取票候场。
+                </div>
+                <span class="tag transport">返程约 50min</span>
+                <span class="tag food">汉堡王取餐</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">傍晚 · 17:25 — 20:17 🎯</div>
+                <div class="timeline-title">🎬《奥德赛》— 英皇电影城 IMAX + VIP</div>
+                <div class="timeline-desc">
+                    <strong>⏱️ 172 分钟</strong> | 巴可激光 + SONY 4K 双机 + JBL 音响<br>
+                    ▸ 22:00 场次非 IMAX 厅，无 VIP 体验 → 17:25 黄金场完美
+                </div>
+                <span class="tag movie">激光 IMAX</span>
+                <span class="tag movie">VIP 厅</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">观影期间 · 17:25 — 20:17</div>
+                <div class="timeline-title">🍗 鸡条观影 — 汉堡王 × 奥德赛</div>
+                <div class="timeline-desc">汉堡王就在影院旁，外带鸡条进场，边看诺兰史诗边享受炸鸡 🍿</div>
+                <span class="tag food">汉堡王</span>
+                <span class="tag movie">鸡条观影</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 · 20:17 — 21:00</div>
+                <div class="timeline-title">🍽️ 晚餐 — 岭南站/岭南天地</div>
+                <div class="timeline-desc">
+                    散场后直接在楼下或隔壁岭南天地解决晚餐：<br>
+                    <strong>▸ 羽鸽集·乳鸽专门店（岭南站 3F）</strong>— 人均 ¥78，顺德菜<br>
+                    <strong>▸ 岭南天地</strong>— 各色粤菜馆、糖水铺，步行即达
+                </div>
+                <span class="tag food">晚餐</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">💡</span> 出行小贴士</div>
+        <div class="tip-card">
+            <ul>
+                <li><strong>🚗 驾车：</strong>祖庙↔顺德大良约 30-40km，单程约 40-50min</li>
+                <li><strong>🚇 地铁：</strong>广佛线祖庙站→东平站（换乘3号线）→大良钟楼站，约 1h20min，¥8-10</li>
+                <li><strong>购票：</strong>猫眼/淘票票锁定 <strong>17:25 IMAX/VIP</strong> 场次</li>
+                <li><strong>鸡条：</strong>铂顿广场汉堡王，距影院步行 3-5 分钟</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ==================== PLAN B ==================== -->
+<div class="tab-content plan-b" id="plan-b">
+<div class="container">
+
+    <div class="sub-tab-bar">
+        <button class="sub-tab-btn active" onclick="switchSubTab('plan-b1')">🕔 17:20 场次 · 麦当劳薯条</button>
+        <button class="sub-tab-btn" onclick="switchSubTab('plan-b2')">🕗 20:30 场次 · 香江饭店晚餐</button>
+    </div>
+
+    <div class="sub-tab-content active" id="plan-b1">
+
+    <div class="section">
+        <div class="section-title"><span class="icon">📍</span> 关键地点信息</div>
+
+        <div class="info-card">
+            <h3>🏨 全季酒店（佛山岭南天地祖庙地铁站店）— 两方案共用</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市禅城区<strong>祖庙路74号</strong></span></div>
+            <div class="info-row"><span class="info-label">地铁</span><span class="info-value">广佛线 <strong>祖庙站</strong> 步行可达，近岭南天地</span></div>
+            <div class="info-row"><span class="info-label">评分</span><span class="info-value">4.7 分 · 新店，设施新，位置绝佳，安静舒适</span></div>
+        </div>
+
+        <div class="info-card">
+            <h3>🎬 CGV影城（顺德海骏达IMAX店）</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市顺德区容桂街道<strong>桂洲大道中海骏达广场 3F</strong>（322号）</span></div>
+            <div class="info-row"><span class="info-label">电话</span><span class="info-value">13392234008</span></div>
+            <div class="info-row"><span class="info-label">区位</span><span class="info-value">顺德容桂核心商圈，海骏达广场内，<strong>容桂第一块 IMAX</strong></span></div>
+            <div class="feature-chips">
+                <div class="feature-chip"><span class="icon">🎥</span> 8 个影厅 · 1120 座</div>
+                <div class="feature-chip"><span class="icon">🖥️</span> IMAX（容桂第一块）</div>
+                <div class="feature-chip"><span class="icon">🎢</span> 4DS 动感座椅 + 三面屏</div>
+                <div class="feature-chip"><span class="icon">👑</span> GOLD CLASS 头等舱</div>
+                <div class="feature-chip"><span class="icon">🏭</span> 工业风装修</div>
+                <div class="feature-chip"><span class="icon">📐</span> 海骏达广场 12 万㎡</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>🍟 麦当劳（海骏达广场 B1）— 薯条观影补给站</h3>
+            <div class="info-row"><span class="info-label">位置</span><span class="info-value">海骏达广场负一层 23-24 号铺，影院楼下</span></div>
+            <div class="info-row"><span class="info-label">电话</span><span class="info-value">0757-23323219</span></div>
+        </div>
+
+        <div class="info-card">
+            <h3>🏯 清晖园 + ⛰️ 顺峰山公园</h3>
+            <div class="info-row"><span class="info-label">清晖园</span><span class="info-value">顺德大良清晖路23号，岭南四大名园之一</span></div>
+            <div class="info-row"><span class="info-label">顺峰山</span><span class="info-value">顺德大良南国东路，距清晖园仅 4.6km / 10 分钟</span></div>
+            <div class="info-row"><span class="info-label">去程</span><span class="info-value">🚗 驾车 40-50min | 🚇 地铁约 1h20min（祖庙→东平换3号线→大良钟楼）</span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">🗺️</span> 路线总览</div>
+        <div class="route-map">
+            祖庙站<span class="arrow">→</span>全季酒店放行李<span class="arrow">→</span>Brunch<span class="arrow">→</span>🚗 40-50min 往顺德<span class="arrow">→</span>清晖园<span class="arrow">→</span>🚗 10min<span class="arrow">→</span>顺峰山<span class="arrow">→</span>🚗 25min 往容桂<span class="arrow">→</span>CGV海骏达<span class="arrow">→</span>🍟麦当劳取餐<span class="arrow">→</span>🎬 17:20-20:12<span class="arrow">→</span>🍽️ 20:12 晚餐<span class="arrow">→</span>🚗 50min 回祖庙酒店
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">⏱️</span> 详细时间轴</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 抵达佛山</div>
+                <div class="timeline-title">🚆 出站 → 全季酒店入住、放行李</div>
+                <div class="timeline-desc">抵达<strong>祖庙站</strong>，步行至<strong>全季酒店（祖庙路74号）</strong>办理入住，轻装上阵。</div>
+                <span class="tag hotel">酒店</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 约 11:00 — 12:00</div>
+                <div class="timeline-title">🍳 地道佛山 Brunch</div>
+                <div class="timeline-desc">
+                    <strong>▸ 蔡澜港式点心（岭南站 LG1）</strong>— 人均 ¥70，肠粉、粥品，10:00 起营业<br>
+                    <strong>▸ 云浮石磨肠粉（福禄路）</strong>— 老店，人均不到 ¥10
+                </div>
+                <span class="tag food">Brunch</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">中午 · 12:00 出发</div>
+                <div class="timeline-title">出发前往顺德 — 清晖园 & 顺峰山</div>
+                <div class="timeline-desc">
+                    <strong>🚗 驾车：</strong>祖庙→顺德大良，约 30-40km，约 <strong>40-50 分钟</strong><br>
+                    <strong>🚇 地铁：</strong>广佛线祖庙站→东平站（换乘3号线）→大良钟楼站，约 <strong>1h20min</strong><br>
+                    <strong>游玩：</strong>清晖园 1.5h + 顺峰山 1.5h = 合计 <strong>3 小时</strong>
+                </div>
+                <span class="tag scenic">景点</span>
+                <span class="tag transport">驾车 40-50min</span>
+                <span class="tag transport">地铁 1h20min</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 12:50 — 14:20</div>
+                <div class="timeline-title">🏯 清晖园游览</div>
+                <div class="timeline-desc">岭南园林代表作，亭台楼阁、假山池沼、百年古树，全国重点文保单位。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 14:30 — 16:00</div>
+                <div class="timeline-title">⛰️ 顺峰山公园游览</div>
+                <div class="timeline-desc">从清晖园驾车 10 分钟即达。湖光山色，步道平缓，顺峰山牌坊气势恢宏。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">下午 · 16:00 — 16:25 🚗</div>
+                <div class="timeline-title">顺峰山 → 容桂 · CGV海骏达</div>
+                <div class="timeline-desc">
+                    🔑 <strong>关键优势：</strong>顺峰山（大良）到 CGV（容桂）仅约 14km，驾车约 <strong>20-25 分钟</strong>，比回祖庙（40-50min）节省一半时间！<br>
+                    抵达后在海骏达 B1 <strong>麦当劳</strong>买好薯条/麦乐鸡，上 3 楼取票候场。
+                </div>
+                <span class="tag transport">大良→容桂 25min</span>
+                <span class="tag food">麦当劳取餐</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">傍晚 · 17:20 — 20:12 🎯</div>
+                <div class="timeline-title">🎬《奥德赛》— CGV IMAX + 4DS + GOLD CLASS</div>
+                <div class="timeline-desc">
+                    <strong>⏱️ 172 分钟</strong> | 容桂第一块 IMAX<br>
+                    ▸ <strong>IMAX</strong> — 超大银幕沉浸体验<br>
+                    ▸ <strong>4DS</strong> — 动感座椅 + 三面屏，全方位感官冲击<br>
+                    ▸ <strong>GOLD CLASS</strong> — 头等舱级座椅，尊享观影
+                </div>
+                <span class="tag movie">IMAX</span>
+                <span class="tag movie">4DS</span>
+                <span class="tag movie">GOLD CLASS</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">观影期间 · 17:20 — 20:12</div>
+                <div class="timeline-title">🍟 薯条观影 — 麦当劳 × 奥德赛</div>
+                <div class="timeline-desc">麦当劳就在海骏达 B1，影院楼下，买好薯条/麦乐鸡带入影院，边看诺兰边享受 🍿</div>
+                <span class="tag food">麦当劳</span>
+                <span class="tag movie">薯条观影</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 · 20:12 — 21:00</div>
+                <div class="timeline-title">🍽️ 晚餐 — 海骏达广场内</div>
+                <div class="timeline-desc">
+                    散场后直接在海骏达广场内解决晚餐，推荐：<br>
+                    <strong>▸ 绿茶餐厅（海骏达店）</strong>— 人气江浙融合菜<br>
+                    <strong>▸ 仁信老铺（容桂店）</strong>— 顺德双皮奶老字号，必打卡<br>
+                    <strong>▸ 达美乐（海骏达店）</strong>— 披萨快餐<br>
+                    <strong>▸ 香港深井陈记烧鹅茶餐厅</strong>— 正宗港式烧腊
+                </div>
+                <span class="tag food">晚餐</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 · 21:00 — 21:50</div>
+                <div class="timeline-title">🚗 返程 — 容桂 → 祖庙酒店</div>
+                <div class="timeline-desc">
+                    晚餐后驾车返回禅城祖庙全季酒店，容桂→禅城约 36-39km，驾车约 <strong>50 分钟</strong>。
+                </div>
+                <span class="tag transport">返程约 50min</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">💡</span> 出行小贴士</div>
+        <div class="tip-card">
+            <ul>
+                <li><strong>🚗 路线优势：</strong>顺峰山（大良）→CGV（容桂）仅 14km / 25min，比回祖庙省一半时间</li>
+                <li><strong>⚠️ 注意：</strong>观影后需从容桂驾车回禅城酒店，约 50min，晚餐后出发，约 22:40 到酒店</li>
+                <li><strong>🚇 地铁：</strong>广佛线祖庙站→东平站（换乘3号线）→顺德学院站，再打车 15min 到海骏达（总约 1h15min）</li>
+                <li><strong>购票：</strong>猫眼/淘票票锁定 <strong>17:20 IMAX/4DS/GOLD CLASS</strong> 场次</li>
+                <li><strong>薯条：</strong>海骏达 B1 麦当劳，影院楼下，即买即走</li>
+            </ul>
+        </div>
+    </div>
+
+</div><!-- end plan-b1 -->
+
+<!-- ==================== B2: 20:30 场次 · 香江饭店 ==================== -->
+<div class="sub-tab-content" id="plan-b2">
+
+    <div class="section">
+        <div class="section-title"><span class="icon">📍</span> 关键地点信息</div>
+
+        <div class="info-card">
+            <h3>🏨 全季酒店（佛山岭南天地祖庙地铁站店）— 两方案共用</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市禅城区<strong>祖庙路74号</strong></span></div>
+            <div class="info-row"><span class="info-label">地铁</span><span class="info-value">广佛线 <strong>祖庙站</strong> 步行可达，近岭南天地</span></div>
+            <div class="info-row"><span class="info-label">评分</span><span class="info-value">4.7 分 · 新店，设施新，位置绝佳，安静舒适</span></div>
+        </div>
+
+        <div class="info-card">
+            <h3>🥢 香江饭店（伦教人民路食街店）— 35年老字号</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市顺德区<strong>伦教街道人民路食街3-5号</strong></span></div>
+            <div class="info-row"><span class="info-label">电话</span><span class="info-value">0757-277</span></div>
+            <div class="info-row"><span class="info-label">营业</span><span class="info-value">07:30-14:00 · <strong>17:00-02:30</strong>（晚市17:00开）</span></div>
+            <div class="info-row"><span class="info-label">人均</span><span class="info-value">约 ¥71/人</span></div>
+            <div class="feature-chips">
+                <div class="feature-chip"><span class="icon">🐍</span> 招牌水蛇粥 · 椒盐蛇碌</div>
+                <div class="feature-chip"><span class="icon">🐔</span> 桑拿鸡 · 筲箕蒸鱼</div>
+                <div class="feature-chip"><span class="icon">🐟</span> 顺德鱼生 · 一蛇多味</div>
+                <div class="feature-chip"><span class="icon">⭐</span> 35年本地老字号</div>
+                <div class="feature-chip"><span class="icon">🏆</span> 食在广东钻石名店</div>
+                <div class="feature-chip"><span class="icon">📍</span> 伦教渔人码头店</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>🎬 CGV影城（顺德海骏达IMAX店）</h3>
+            <div class="info-row"><span class="info-label">地址</span><span class="info-value">佛山市顺德区容桂街道<strong>桂洲大道中海骏达广场 3F</strong>（322号）</span></div>
+            <div class="info-row"><span class="info-label">电话</span><span class="info-value">13392234008</span></div>
+            <div class="feature-chips">
+                <div class="feature-chip"><span class="icon">🎥</span> 8 个影厅 · 1120 座</div>
+                <div class="feature-chip"><span class="icon">🖥️</span> IMAX（容桂第一块）</div>
+                <div class="feature-chip"><span class="icon">🎢</span> 4DS 动感座椅 + 三面屏</div>
+                <div class="feature-chip"><span class="icon">👑</span> GOLD CLASS 头等舱</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>🏯 清晖园 + ⛰️ 顺峰山公园</h3>
+            <div class="info-row"><span class="info-label">清晖园</span><span class="info-value">顺德大良清晖路23号，岭南四大名园之一</span></div>
+            <div class="info-row"><span class="info-label">顺峰山</span><span class="info-value">顺德大良南国东路，距清晖园仅 4.6km / 10 分钟</span></div>
+            <div class="info-row"><span class="info-label">去程</span><span class="info-value">🚗 驾车 40-50min | 🚇 地铁约 1h20min（祖庙→东平换3号线→大良钟楼）</span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">🗺️</span> 路线总览</div>
+        <div class="route-map">
+            祖庙站<span class="arrow">→</span>全季酒店放行李<span class="arrow">→</span>Brunch<span class="arrow">→</span>🚗 40-50min 往顺德<span class="arrow">→</span>清晖园<span class="arrow">→</span>🚗 10min<span class="arrow">→</span>顺峰山<span class="arrow">→</span>🚗 20min 往伦教<span class="arrow">→</span>🥢香江饭店<span class="arrow">→</span>🚗 25min 往容桂<span class="arrow">→</span>CGV海骏达<span class="arrow">→</span>🎬 20:30-23:22<span class="arrow">→</span>🚗 50min 回酒店
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">⏱️</span> 详细时间轴</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 抵达佛山</div>
+                <div class="timeline-title">🚆 出站 → 全季酒店入住、放行李</div>
+                <div class="timeline-desc">抵达<strong>祖庙站</strong>，步行至<strong>全季酒店（祖庙路74号）</strong>办理入住，轻装上阵。</div>
+                <span class="tag hotel">酒店</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">上午 · 约 11:00 — 12:00</div>
+                <div class="timeline-title">🍳 地道佛山 Brunch</div>
+                <div class="timeline-desc">
+                    <strong>▸ 蔡澜港式点心（岭南站 LG1）</strong>— 人均 ¥70，肠粉、粥品，10:00 起营业<br>
+                    <strong>▸ 云浮石磨肠粉（福禄路）</strong>— 老店，人均不到 ¥10
+                </div>
+                <span class="tag food">Brunch</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">中午 · 12:00 出发</div>
+                <div class="timeline-title">出发前往顺德 — 清晖园 & 顺峰山</div>
+                <div class="timeline-desc">
+                    <strong>🚗 驾车：</strong>祖庙→顺德大良，约 30-40km，约 <strong>40-50 分钟</strong><br>
+                    <strong>🚇 地铁：</strong>广佛线祖庙站→东平站（换乘3号线）→大良钟楼站，约 <strong>1h20min</strong><br>
+                    <strong>游玩：</strong>清晖园 1.5h + 顺峰山 1.5h = 合计 <strong>3 小时</strong>
+                </div>
+                <span class="tag scenic">景点</span>
+                <span class="tag transport">驾车 40-50min</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 12:50 — 14:20</div>
+                <div class="timeline-title">🏯 清晖园游览</div>
+                <div class="timeline-desc">岭南园林代表作，亭台楼阁、假山池沼、百年古树，全国重点文保单位。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">下午 · 14:30 — 16:00</div>
+                <div class="timeline-title">⛰️ 顺峰山公园游览</div>
+                <div class="timeline-desc">从清晖园驾车 10 分钟即达。湖光山色，步道平缓，顺峰山牌坊气势恢宏。</div>
+                <span class="tag scenic">游览 1.5h</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">下午 · 16:00 — 16:25 🚗</div>
+                <div class="timeline-title">顺峰山 → 伦教 · 香江饭店</div>
+                <div class="timeline-desc">
+                    <strong>🚗 驾车：</strong>顺峰山（大良）→ 香江饭店（伦教人民路食街），约 <strong>14-18km，20-25 分钟</strong><br>
+                    🕔 17:00 晚市开门，到达后稍作休整，等开市即入座。35年老字号，顺德水蛇名店，<strong>一蛇多味</strong>经典吃法！
+                </div>
+                <span class="tag transport">大良→伦教 20min</span>
+                <span class="tag food">香江饭店</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">傍晚 · 17:00 — 18:30 🥢</div>
+                <div class="timeline-title">🍽️ 香江饭店 · 地道顺德晚餐</div>
+                <div class="timeline-desc">
+                    🔑 <strong>35年本地老字号 · 食在广东钻石名店</strong><br>
+                    <strong>▸ 招牌水蛇粥</strong> — 明火现熬，蛇肉鲜嫩，粥底绵滑<br>
+                    <strong>▸ 椒盐蛇碌</strong> — 外脆里嫩，必点招牌<br>
+                    <strong>▸ 桑拿鸡</strong> — 鲜嫩多汁，顺德经典<br>
+                    <strong>▸ 筲箕蒸鱼</strong> — 鱼肉鲜甜，原汁原味<br>
+                    <strong>▸ 顺德鱼生</strong> — 薄如蝉翼，传统手艺<br>
+                    人均 ¥71，吃饱喝足再出发观影！
+                </div>
+                <span class="tag food">晚餐 1.5h</span>
+                <span class="tag food">人均 ¥71</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 · 18:30 — 19:00 🚗</div>
+                <div class="timeline-title">香江饭店（伦教）→ 容桂 · CGV海骏达</div>
+                <div class="timeline-desc">
+                    <strong>🚗 驾车：</strong>伦教人民路→容桂海骏达，约 <strong>18-20km，25-30 分钟</strong><br>
+                    抵达后在海骏达 B1 <strong>麦当劳</strong>买好薯条/麦乐鸡，上 3 楼取票候场。
+                </div>
+                <span class="tag transport">伦教→容桂 25min</span>
+                <span class="tag food">麦当劳取餐</span>
+            </div>
+            <div class="timeline-item highlight">
+                <div class="timeline-time">晚上 · 20:30 — 23:22 🎯</div>
+                <div class="timeline-title">🎬《奥德赛》— CGV IMAX + 4DS + GOLD CLASS</div>
+                <div class="timeline-desc">
+                    <strong>⏱️ 172 分钟</strong> | 容桂第一块 IMAX<br>
+                    ▸ <strong>IMAX</strong> — 超大银幕沉浸体验<br>
+                    ▸ <strong>4DS</strong> — 动感座椅 + 三面屏，全方位感官冲击<br>
+                    ▸ <strong>GOLD CLASS</strong> — 头等舱级座椅，尊享观影<br>
+                    🔑 晚餐已解决，安心享受完整观影体验！
+                </div>
+                <span class="tag movie">IMAX</span>
+                <span class="tag movie">4DS</span>
+                <span class="tag movie">GOLD CLASS</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">深夜 · 23:22 — 00:15</div>
+                <div class="timeline-title">🚗 散场返程 — 容桂 → 祖庙全季酒店</div>
+                <div class="timeline-desc">
+                    ⚠️ <strong>地铁已停运</strong>（广佛线末班约 23:00），需 <strong>打车</strong> 回酒店<br>
+                    容桂→禅城祖庙约 36-39km，驾车约 <strong>50 分钟</strong>，预计 <strong>00:15 左右</strong> 到酒店。
+                </div>
+                <span class="tag transport">返程约 50min</span>
+                <span class="tag transport">打车 ¥80-100</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span class="icon">💡</span> 出行小贴士</div>
+        <div class="tip-card">
+            <ul>
+                <li><strong>🥢 香江饭店：</strong>晚市 17:00 开门，16:00 从顺峰山出发 20min 可达，时间刚好衔接</li>
+                <li><strong>🚗 路线：</strong>大良→伦教（20min）→容桂（25min），顺路不绕，全程在顺德区内穿行</li>
+                <li><strong>⚠️ 注意：</strong>散场 23:22，地铁已停运，必须打车回酒店，约 ¥80-100</li>
+                <li><strong>购票：</strong>猫眼/淘票票锁定 <strong>20:30 IMAX/4DS/GOLD CLASS</strong> 场次</li>
+                <li><strong>薯条：</strong>海骏达 B1 麦当劳，影院楼下，进场前即买即走</li>
+            </ul>
+        </div>
+    </div>
+
+</div><!-- end plan-b2 -->
+
+</div>
+</div>
+
+<!-- ==================== 方案对比总结 ==================== -->
+<div style="max-width:820px; margin:20px auto; padding:0 20px;">
+    <div class="section-title" style="border-left:4px solid #7d3c98; justify-content:center; font-size:1.1em;">
+        ⚖️ 两方案核心对比
+    </div>
+    <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.9em; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+            <thead>
+                <tr style="background:#f8f9fa;">
+                    <th style="padding:12px 16px; text-align:left; border-bottom:2px solid #e0e0e0;">对比维度</th>
+                    <th style="padding:12px 16px; text-align:center; border-bottom:2px solid #e0e0e0; color:var(--accent-a);">方案一 · 英皇</th>
+                    <th style="padding:12px 16px; text-align:center; border-bottom:2px solid #e0e0e0; color:var(--accent-b);">CGV · 17:20</th>
+                    <th style="padding:12px 16px; text-align:center; border-bottom:2px solid #e0e0e0; color:var(--accent-b);">CGV · 20:30</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">影院</td>
+                    <td style="padding:10px 16px; text-align:center;">英皇 · 岭南站 F6</td>
+                    <td style="padding:10px 16px; text-align:center;" colspan="2">CGV · 海骏达广场 3F</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                    <td style="padding:10px 16px; font-weight:600;">影院位置</td>
+                    <td style="padding:10px 16px; text-align:center;">禅城祖庙</td>
+                    <td style="padding:10px 16px; text-align:center;" colspan="2">顺德容桂（距祖庙 36km）</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">观影时间</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-a); font-weight:700;">17:25 — 20:17</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b); font-weight:700;">17:20 — 20:12</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b); font-weight:700;">20:30 — 23:22</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                    <td style="padding:10px 16px; font-weight:600;">影厅特色</td>
+                    <td style="padding:10px 16px; text-align:center;">激光 IMAX + VIP</td>
+                    <td style="padding:10px 16px; text-align:center;" colspan="2">IMAX + 4DS + GOLD CLASS</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">景点→影院路程</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-a);">大良→祖庙 约 <strong>50min</strong></td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b);">大良→容桂 约 <strong>25min</strong> ✅</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b);">大良→伦教→容桂 <strong>~45min</strong></td>
+                </tr>
+                <tr style="background:#fafafa;">
+                    <td style="padding:10px 16px; font-weight:600;">观影后回酒店</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-a);">影院=酒店旁，<strong>0min</strong> ✅</td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b);">容桂→祖庙 <strong>50min</strong></td>
+                    <td style="padding:10px 16px; text-align:center; color:var(--accent-b);">容桂→祖庙 <strong>50min</strong>（打车）</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">观影零食</td>
+                    <td style="padding:10px 16px; text-align:center;">🍔 汉堡王（鸡条）</td>
+                    <td style="padding:10px 16px; text-align:center;" colspan="2">🍟 麦当劳（薯条）</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                    <td style="padding:10px 16px; font-weight:600;">晚餐</td>
+                    <td style="padding:10px 16px; text-align:center;">岭南站 / 岭南天地</td>
+                    <td style="padding:10px 16px; text-align:center;">海骏达广场内</td>
+                    <td style="padding:10px 16px; text-align:center;">🥢 香江饭店（35年老字号）</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">晚餐人均</td>
+                    <td style="padding:10px 16px; text-align:center;">¥50-80</td>
+                    <td style="padding:10px 16px; text-align:center;">¥50-80</td>
+                    <td style="padding:10px 16px; text-align:center; color:#b9770e; font-weight:600;">~¥71</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                    <td style="padding:10px 16px; font-weight:600;">总驾车里程</td>
+                    <td style="padding:10px 16px; text-align:center;">≈ <strong>70km</strong></td>
+                    <td style="padding:10px 16px; text-align:center;">≈ <strong>90km</strong></td>
+                    <td style="padding:10px 16px; text-align:center;">≈ <strong>100km</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 16px; font-weight:600;">到酒店时间</td>
+                    <td style="padding:10px 16px; text-align:center; color:#27ae60; font-weight:700;">约 21:00 ✅</td>
+                    <td style="padding:10px 16px; text-align:center;">约 22:40</td>
+                    <td style="padding:10px 16px; text-align:center; color:#e67e22;">约 00:15 ⚠️</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="highlight-box" style="margin-top:16px; background:linear-gradient(135deg,#f4ecf7,#fdf2e9); border-color:#d5b8e8;">
+        <h3 style="color:#7d3c98;">📊 总结建议</h3>
+        <p style="color:#5b2c6f; font-size:0.88em;">
+            <strong>方案一（英皇）</strong>适合追求<strong>轻松便捷</strong>：影院在酒店隔壁，观影后步行即回，晚餐选择丰富，整体节奏最舒适。<br><br>
+            <strong>方案二·17:20（CGV早场）</strong>适合追求<strong>极致体验</strong>：IMAX + 4DS + GOLD CLASS 三件套拉满，景点→影院仅 25 分钟，下午更从容。代价是观影后需驾车 50min 回酒店，到店约 22:40。<br><br>
+            <strong>方案二·20:30（CGV晚场）</strong>适合<strong>美食+观影两不误</strong>：顺路打卡35年老字号香江饭店，吃完地道顺德菜再去观影，晚餐品质最高。代价是散场已近凌晨，需打车回酒店（¥80-100），到店约 00:15。
+        </p>
+    </div>
+</div>
+
+<footer>佛山旅行规划 · 双方案对比 · 2026.09</footer>
+
+<script>
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelector('.tab-btn.' + tab).classList.add('active');
+    document.getElementById(tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchSubTab(subTab) {
+    var parent = document.getElementById(subTab).parentElement;
+    parent.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+    parent.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
+    parent.querySelector('.sub-tab-btn[onclick*="' + subTab + '"]').classList.add('active');
+    document.getElementById(subTab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
