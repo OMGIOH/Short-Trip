@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>佛山两日行程</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #fff;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-inner {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 16px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1d1f;
+            letter-spacing: -0.4px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-tab {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6e6e73;
+            background: none;
+            border: none;
+            padding: 12px 14px;
+            cursor: pointer;
+            letter-spacing: -0.08px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-tab.active {
+            color: #1d1d1f;
+            border-bottom-color: #1d1d1f;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 16px 32px;
+            background: #fbfbfd;
+        }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6e6e73;
+            letter-spacing: -0.12px;
+            margin-bottom: 6px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            line-height: 1.15;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+
+        .hero-sub {
+            font-size: 15px;
+            font-weight: 500;
+            color: #86868b;
+            letter-spacing: -0.3px;
+            line-height: 1.5;
+        }
+
+        .divider {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .divider hr {
+            border: none;
+            height: 1px;
+            background: #d2d2d7;
+        }
+
+        .section {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .section-header {
+            text-align: center;
+            padding: 36px 0 24px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            color: #1d1d1f;
+            margin-bottom: 6px;
+        }
+
+        .section-header p {
+            font-size: 14px;
+            color: #86868b;
+            letter-spacing: -0.15px;
+            line-height: 1.5;
+        }
+
+        .day-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6e6e73;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            max-width: 100%;
+            margin: 0 auto 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d2d2d7;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+            animation: fadeUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.06s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.12s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.18s; }
+        .timeline-item:nth-child(5) { animation-delay: 0.24s; }
+        .timeline-item:nth-child(6) { animation-delay: 0.30s; }
+        .timeline-item:nth-child(7) { animation-delay: 0.36s; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #1d1d1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1d1d1f;
+            z-index: 1;
+        }
+
+        .timeline-dot.transit {
+            border-color: #86868b;
+            color: #86868b;
+            background: #f5f5f7;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            font-weight: 600;
+            color: #86868b;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+        }
+
+        .timeline-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #1d1d1f;
+            margin-bottom: 3px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: #6e6e73;
+            letter-spacing: -0.12px;
+            line-height: 1.55;
+            margin-bottom: 3px;
+        }
+
+        .timeline-meta {
+            font-size: 11px;
+            color: #aeaeb2;
+            letter-spacing: -0.06px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .transit-info {
+            background: #f5f5f7;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6e6e73;
+            letter-spacing: -0.08px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transit-info svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            fill: #86868b;
+        }
+
+        .map-container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 16px 40px;
+        }
+
+        .map-wrapper {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.05);
+            height: 320px;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .transit-plan {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 16px 40px;
+        }
+
+        .transit-plan-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .transit-card {
+            background: #fbfbfd;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e5e5ea;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .transit-card:hover {
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .transit-card-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1d1d1f;
+            letter-spacing: -0.2px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            min-height: 48px;
+        }
+
+        .transit-card-header .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: #e5e5ea;
+            color: #6e6e73;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .transit-card.open .transit-card-header .num {
+            background: #0071e3;
+            color: #fff;
+        }
+
+        .transit-card-header .arrow {
+            margin-left: auto;
+            font-size: 12px;
+            color: #aeaeb2;
+            transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .transit-card.open .transit-card-header .arrow {
+            transform: rotate(180deg);
+        }
+
+        .transit-card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .transit-card.open .transit-card-body {
+            max-height: 800px;
+        }
+
+        .transit-card-body-inner {
+            padding: 0 16px 16px;
+        }
+
+        .transit-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .transit-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #f0f0f5;
+        }
+
+        .transit-row .icon {
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .transit-row .mode {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d1d1f;
+            width: 48px;
+            flex-shrink: 0;
+            letter-spacing: -0.1px;
+            padding-top: 4px;
+        }
+
+        .transit-row .detail {
+            font-size: 12px;
+            color: #6e6e73;
+            letter-spacing: -0.08px;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .transit-row .detail .station-line {
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+        .transit-row .highlight {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6e6e73;
+            letter-spacing: -0.08px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .transit-row .price-tiers {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .transit-row .price-tier {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #f5f5f7;
+            color: #6e6e73;
+            letter-spacing: -0.04px;
+        }
+
+        .transit-row .price-tier em {
+            font-style: normal;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .transit-row {
+            flex-wrap: wrap;
+        }
+        .transit-row .detail {
+            min-width: 100%;
+            order: 3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 16px;
+            color: #86868b;
+            font-size: 12px;
+            letter-spacing: -0.08px;
+        }
+
+        .footer a {
+            color: #515154;
+            text-decoration: none;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .leaflet-popup-content {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-size: 14px;
+            margin: 8px 12px;
+            line-height: 1.5;
+        }
+
+        .marker-label {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 3px 8px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: #1d1d1f !important;
+            letter-spacing: -0.06px !important;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08) !important;
+            white-space: nowrap !important;
+        }
+
+        .marker-label::before {
+            display: none !important;
+        }
+
+        .leaflet-popup-content strong {
+            font-size: 15px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        @media (min-width: 735px) {
+            .nav-inner {
+                padding: 0 24px;
+                height: 48px;
+            }
+            .nav-logo {
+                font-size: 20px;
+            }
+            .nav-tab {
+                padding: 12px 16px;
+            }
+            .hero {
+                padding: 60px 24px 40px;
+            }
+            .hero-eyebrow {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            .hero h1 {
+                font-size: 48px;
+                letter-spacing: -1px;
+                line-height: 1.1;
+                margin-bottom: 12px;
+            }
+            .hero-sub {
+                font-size: 19px;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .divider, .section, .map-container, .transit-plan {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            .section-header {
+                padding: 50px 0 30px;
+            }
+            .section-header h2 {
+                font-size: 36px;
+                letter-spacing: -0.7px;
+            }
+            .section-header p {
+                font-size: 16px;
+            }
+            .day-label {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            .timeline {
+                padding-left: 32px;
+                max-width: 680px;
+            }
+            .timeline::before {
+                left: 11px;
+            }
+            .timeline-item {
+                margin-bottom: 32px;
+            }
+            .timeline-dot {
+                left: -32px;
+                width: 24px;
+                height: 24px;
+                font-size: 11px;
+            }
+            .timeline-time {
+                font-size: 13px;
+            }
+            .timeline-title {
+                font-size: 20px;
+                margin-bottom: 4px;
+            }
+            .timeline-desc {
+                font-size: 15px;
+                line-height: 1.5;
+                margin-bottom: 4px;
+            }
+            .timeline-meta {
+                font-size: 12px;
+                gap: 16px;
+            }
+            .map-wrapper {
+                height: 500px;
+                border-radius: 18px;
+            }
+            .transit-plan-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            .transit-card {
+                border-radius: 14px;
+                margin-bottom: 12px;
+            }
+            .transit-card-header {
+                font-size: 16px;
+                padding: 16px 20px;
+            }
+            .transit-card-header .num {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+            .transit-card-header .arrow {
+                font-size: 14px;
+            }
+            .transit-card-body-inner {
+                padding: 0 20px 20px;
+            }
+            .transit-options {
+                gap: 10px;
+            }
+            .transit-row {
+                padding: 12px 14px;
+                flex-wrap: nowrap;
+            }
+            .transit-row .icon {
+                font-size: 24px;
+                width: 36px;
+                height: 36px;
+            }
+            .transit-row .mode {
+                font-size: 14px;
+                width: 56px;
+                padding-top: 8px;
+            }
+            .transit-row .detail {
+                font-size: 13px;
+            }
+            .transit-row .highlight {
+                font-size: 13px;
+                padding-top: 8px;
+            }
+            .transit-row .price-tiers {
+                gap: 8px;
+                margin-top: 6px;
+            }
+            .transit-row .price-tier {
+                font-size: 11px;
+                padding: 3px 8px;
+                border-radius: 6px;
+            }
+            .footer {
+                padding: 40px 24px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">Short Trip</div>
+            <div class="nav-tabs">
+                <button class="nav-tab active">第一天</button>
+                <button class="nav-tab">第二天</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-eyebrow">佛山 · 顺德</div>
+        <h1>两日行程规划</h1>
+        <p class="hero-sub">广府文化腹地，世界美食之都。两天时间，从禅城到顺德，尽览岭南风华。</p>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <section class="section" id="day1">
+        <div class="section-header">
+            <div class="day-label">第一天</div>
+            <h2>禅城出发 · 寻味顺德</h2>
+            <p>高铁抵达 → 老字号午餐 → 岭南园林 → 城市绿肺 → 影院之夜</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <div class="timeline-time">10:30</div>
+                <div class="timeline-title">佛山站 出站</div>
+                <div class="timeline-desc">广湛高铁佛山站，抵达禅城区。站址位于文昌西路12号，地处祖庙街道城北片区。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区文昌西路12号</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">10:30 — 10:50</div>
+                <div class="timeline-title">前往酒店 · 放置行李</div>
+                <div class="timeline-desc">打车前往禅城区祖庙商圈附近酒店，办理入住、放置行李。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 4.5 km · 打车约 15 分钟 · 约 ¥15
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">10:50 — 11:30</div>
+                <div class="timeline-title">前往香江饭店</div>
+                <div class="timeline-desc">从禅城出发前往顺德伦教，品尝地道顺德老字号。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 25 km · 打车约 35 分钟 · 约 ¥60
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">2</div>
+                <div class="timeline-time">11:30 — 13:00</div>
+                <div class="timeline-title">香江饭店 · 午餐</div>
+                <div class="timeline-desc">中华餐饮名店、世界美食之都顺德示范店。经营超25年的顺德老字号，招牌菜包括水蛇粥、椒盐蛇、盐焗掌亦、枣茸蒸水蛇、锡纸排骨。"逢到伦教，必来香江"。</div>
+                <div class="timeline-meta">
+                    <span>📍 顺德区伦教人民路食街3号</span>
+                    <span>📞 0757-27732777</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">13:00 — 13:20</div>
+                <div class="timeline-title">前往清晖园</div>
+                <div class="timeline-desc">从伦教出发前往大良，参观广东四大名园之首。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 9 km · 打车约 18 分钟 · 约 ¥22
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <div class="timeline-time">13:20 — 15:30</div>
+                <div class="timeline-title">清晖园</div>
+                <div class="timeline-desc">广东四大名园之首，始建于明代的岭南古典园林。园内古树参天，亭台楼阁错落有致，集岭南古园林艺术与珠三角水乡特色于一体。地铁3号线大良钟楼站步行可达。</div>
+                <div class="timeline-meta">
+                    <span>📍 顺德区大良清晖路23号</span>
+                    <span>🎫 门票 ¥15</span>
+                    <span>🕐 09:00-17:30</span>
+                    <span>📞 0757-22226196</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">15:30 — 15:40</div>
+                <div class="timeline-title">前往顺峰山公园</div>
+                <div class="timeline-desc">清晖园出发，距离很近，片刻即达。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 3 km · 打车约 8 分钟 · 约 ¥10
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">4</div>
+                <div class="timeline-time">15:40 — 18:00</div>
+                <div class="timeline-title">顺峰山公园</div>
+                <div class="timeline-desc">顺德城市绿肺，拥有亚洲最大牌坊。涵盖太平山、神步山、桂畔湖、青云湖等区域，设有22.7公里环湖绿道。免费入园，可骑行、散步、赏湖光山色。</div>
+                <div class="timeline-meta">
+                    <span>📍 顺德区南国东路与驹荣南路交汇处</span>
+                    <span>🎫 免费</span>
+                    <span>🕐 06:30-22:30</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">18:00 — 18:45</div>
+                <div class="timeline-title">返回禅城 · 王府井紫薇港</div>
+                <div class="timeline-desc">从顺峰山返回禅城区，前往王府井紫薇港，可在商场内晚餐。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 32 km · 打车约 40 分钟 · 约 ¥75
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">5</div>
+                <div class="timeline-time">18:45 — 20:40</div>
+                <div class="timeline-title">王府井紫薇港 · 晚餐 & 休整</div>
+                <div class="timeline-desc">佛山大型商业综合体，可在商场内自由选择餐厅晚餐，休整片刻后前往5楼影城。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区佛山大道中81号</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">6</div>
+                <div class="timeline-time">20:50 — 23:42</div>
+                <div class="timeline-title">横店纷腾影城 · 《奥德赛》</div>
+                <div class="timeline-desc">克里斯托弗·诺兰执导史诗巨制，改编自荷马史诗。马特·达蒙、汤姆·赫兰德、安妮·海瑟薇主演，IMAX实拍，特洛伊战争后奥德修斯十年归乡的传奇旅程。累计票房已超6.75亿，延长上映至10月13日。</div>
+                <div class="timeline-meta">
+                    <span>📍 王府井紫薇港5层L-5017号</span>
+                    <span>🎬 片长 172分钟</span>
+                    <span>📞 0757-83139857</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <section class="section" id="day2">
+        <div class="section-header">
+            <div class="day-label">第二天</div>
+            <h2>待规划</h2>
+            <p>行程待补充，敬请期待</p>
+        </div>
+        <div style="text-align:center;padding:40px 0 80px;color:#aeaeb2;font-size:15px;letter-spacing:-0.12px;">
+            第二天行程尚未安排，<br>可根据个人喜好添加佛山祖庙、南风古灶、岭南天地等景点。
+        </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <div class="section" style="padding-bottom:40px;">
+        <div class="section-header">
+            <h2>行程地图</h2>
+            <p>点击标记查看地点详情，可缩放拖拽浏览</p>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div class="map-wrapper">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div class="transit-plan">
+        <div class="transit-plan-title">交通方案对比</div>
+        <p style="text-align:center;font-size:13px;color:#aeaeb2;margin:-12px 0 20px;letter-spacing:-0.06px;">点击展开查看详细路线</p>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">1</span> 佛山站 → <span class="num">2</span> 禅城区酒店
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">文昌西路 → 汾江中路 → 祖庙路</span>，全程约 6km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥20</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥18</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥25</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥35</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">16分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚌</span><span class="mode">公交</span>
+                            <span class="detail">
+                                <span class="station-line">103路 / 111路 / 116路 / G12路</span>，佛山火车站 → 祖庙站<br>
+                                共约 8 站，直达无需换乘
+                            </span>
+                            <span class="highlight">约30分钟 · ¥2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">2</span> 禅城区酒店 → <span class="num">3</span> 香江饭店
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">祖庙 → 佛山大道 → 广佛江珠高速 → 龙洲公路 → 伦教人民路</span>，全程约 25km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥80</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥70</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥90</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥130</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">35分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚇</span><span class="mode">地铁</span>
+                            <span class="detail">
+                                <span class="station-line">广佛线</span>：祖庙 → 同济路 → 季华园 → <b>桂城</b>（换乘）<br>
+                                <span class="station-line">3号线</span>：桂城 → 镇安 → 季华六路 → 亚艺公园 → 湾华 → 东平 → 大墩 → 岳步 → 潭洲会展 → 北滘西站 → 高村 → 北滘公园 → 广教 → <b>伦教</b><br>
+                                共 16 站，换乘 1 次，出站步行约 1.1km
+                            </span>
+                            <span class="highlight">约80分钟 · ¥8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">3</span> 香江饭店 → <span class="num">4</span> 清晖园
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">伦教人民路 → 龙洲公路 → 广珠公路 → 清晖路</span>，全程约 9km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥28</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥24</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥35</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥48</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">18分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚇</span><span class="mode">地铁</span>
+                            <span class="detail">
+                                <span class="station-line">3号线</span>：伦教 → 荔村 → 顺德人民医院 → 环市北 → <b>大良钟楼</b>（E口出）<br>
+                                共 4 站，无需换乘，出站步行约 450m
+                            </span>
+                            <span class="highlight">约25分钟 · ¥3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">4</span> 清晖园 → <span class="num">5</span> 顺峰山公园
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">清晖路 → 东乐路 → 南国东路</span>，全程约 3.2km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥12</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥11</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥16</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥22</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">9分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚇</span><span class="mode">地铁</span>
+                            <span class="detail">
+                                <span class="station-line">3号线</span>：大良钟楼 → 东乐路 → <b>驹荣北路</b>（A口出）<br>
+                                共 2 站，无需换乘，出站步行约 900m
+                            </span>
+                            <span class="highlight">约20分钟 · ¥3</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚌</span><span class="mode">公交</span>
+                            <span class="detail">
+                                <span class="station-line">305路 / 319路 / 320路 / 311路</span>，清晖园站 → 顺峰山公园站<br>
+                                直达，约 8 站
+                            </span>
+                            <span class="highlight">约25分钟 · ¥2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">5</span> 顺峰山公园 → <span class="num">6</span> 横店纷腾影城
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">南国东路 → 广珠西线高速 → 佛山大道中</span>，全程约 32km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥110</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥92</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥120</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥170</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">40分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚇</span><span class="mode">地铁</span>
+                            <span class="detail">
+                                <span class="station-line">3号线</span>：驹荣北路 → 东乐路 → 大良钟楼 → 环市北 → 顺德人民医院 → 荔村 → 伦教 → 广教 → 北滘公园 → 高村 → 北滘西站 → 潭洲会展 → 岳步 → 大墩 → 东平 → 湾华 → 亚艺公园 → 季华六路 → 镇安 → <b>桂城</b>（换乘）<br>
+                                <span class="station-line">广佛线</span>：桂城 → <b>季华园</b>（出站步行约 800m）<br>
+                                共 21 站，换乘 1 次
+                            </span>
+                            <span class="highlight">约80分钟 · ¥8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"><hr></div>
+
+    <footer class="footer">
+        <p>Short Trip &copy; 2026 &nbsp;|&nbsp; 行程数据仅供参考，实际路况以当天为准</p>
+    </footer>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        (function() {
+            var locations = [
+                { name: '佛山站', lat: 23.0481, lng: 113.0975, desc: '禅城区文昌西路12号<br>广湛高铁佛山站', time: '10:30' },
+                { name: '禅城区酒店', lat: 23.028, lng: 113.117, desc: '禅城区祖庙商圈<br>放置行李、办理入住', time: '10:30-10:50' },
+                { name: '香江饭店', lat: 22.872, lng: 113.210, desc: '顺德区伦教人民路食街3号<br>中华餐饮名店 · 顺德老字号', time: '11:30-13:00' },
+                { name: '清晖园', lat: 22.8356, lng: 113.2551, desc: '顺德区大良清晖路23号<br>广东四大名园之首 · 门票¥15', time: '13:20-15:30' },
+                { name: '顺峰山公园', lat: 22.821, lng: 113.281, desc: '顺德区南国东路<br>免费入园 · 亚洲最大牌坊', time: '15:40-18:00' },
+                { name: '横店纷腾影城', lat: 23.015, lng: 113.105, desc: '禅城区佛山大道中81号王府井紫薇港5层<br>《奥德赛》20:50-23:42', time: '20:50-23:42' }
+            ];
+
+            var map = L.map('map', {
+                center: [22.90, 113.18],
+                zoom: 11,
+                zoomControl: true,
+                scrollWheelZoom: true
+            });
+
+            var tileLayer = L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+                attribution: '© 高德地图',
+                maxZoom: 18
+            });
+            tileLayer.addTo(map);
+            tileLayer.on('tileerror', function() {
+                tileLayer.setUrl('https://tile.openstreetmap.de/{z}/{x}/{y}.png');
+            });
+
+            var numberIcon = function(num) {
+                return L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background:#0071e3;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,sans-serif;box-shadow:0 2px 8px rgba(0,113,227,0.3);border:2px solid #fff;">' + num + '</div>',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14],
+                    popupAnchor: [0, -18]
+                });
+            };
+
+            locations.forEach(function(loc, i) {
+                var marker = L.marker([loc.lat, loc.lng], {
+                    icon: numberIcon(i + 1)
+                }).addTo(map);
+
+                marker.bindTooltip(loc.name, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -8],
+                    className: 'marker-label'
+                });
+
+                marker.bindPopup(
+                    '<strong>' + loc.name + '</strong>' +
+                    loc.desc +
+                    '<br><span style="color:#86868b;font-size:12px;">⏱ ' + loc.time + '</span>'
+                );
+            });
+
+            var routeLabels = ['约6km · 16分钟', '约25km · 35分钟', '约9km · 18分钟', '约3.2km · 9分钟', '约32km · 40分钟'];
+
+            for (var i = 0; i < locations.length - 1; i++) {
+                var segment = [[locations[i].lat, locations[i].lng], [locations[i + 1].lat, locations[i + 1].lng]];
+                L.polyline(segment, {
+                    color: '#0071e3', weight: 3, opacity: 0.6,
+                    dashArray: '8, 6', lineCap: 'round'
+                }).addTo(map);
+
+                var midLat = (segment[0][0] + segment[1][0]) / 2;
+                var midLng = (segment[0][1] + segment[1][1]) / 2;
+                L.marker([midLat, midLng], {
+                    icon: L.divIcon({
+                        className: 'route-label',
+                        html: '<div style="background:#fff;padding:2px 8px;border-radius:10px;font-size:10px;color:#6e6e73;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-0.04px;">' + routeLabels[i] + '</div>',
+                        iconSize: [0, 0],
+                        iconAnchor: [0, 0]
+                    })
+                }).addTo(map);
+            }
+
+            var allCoords = locations.map(function(l) { return [l.lat, l.lng]; });
+            map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
+
+            document.querySelectorAll('.nav-tab').forEach(function(tab, i) {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    var target = i === 0 ? '#day1' : '#day2';
+                    document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 300);
+
+            document.querySelectorAll('.transit-card').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
