@@ -13,6 +13,7 @@
         }
 
         html {
+            color-scheme: light only;
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
         }
@@ -674,11 +675,13 @@
         <div class="nav-inner">
             <div class="nav-logo">Short Trip</div>
             <div class="nav-tabs">
-                <button class="nav-tab active">第一天</button>
-                <button class="nav-tab">第二天</button>
+                <button class="nav-tab active" onclick="switchDay(1)">第一天</button>
+                <button class="nav-tab" onclick="switchDay(2)">第二天</button>
             </div>
         </div>
     </nav>
+
+    <div id="day1-wrap">
 
     <section class="hero">
         <div class="hero-eyebrow">佛山 · 顺德</div>
@@ -818,19 +821,6 @@
                     <span>📞 0757-83139857</span>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <div class="divider"><hr></div>
-
-    <section class="section" id="day2">
-        <div class="section-header">
-            <div class="day-label">第二天</div>
-            <h2>待规划</h2>
-            <p>行程待补充，敬请期待</p>
-        </div>
-        <div style="text-align:center;padding:40px 0 80px;color:#aeaeb2;font-size:15px;letter-spacing:-0.12px;">
-            第二天行程尚未安排，<br>可根据个人喜好添加佛山祖庙、南风古灶、岭南天地等景点。
         </div>
     </section>
 
@@ -1034,6 +1024,358 @@
         </div>
     </div>
 
+    </div>
+
+    <div id="day2-wrap" style="display:none;">
+
+    <section class="hero">
+        <div class="hero-eyebrow">佛山 · 禅城</div>
+        <h1>两日行程规划</h1>
+        <p class="hero-sub">第二天深入禅城腹地，从岭南园林到千年古灶，感受佛山文脉。</p>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <section class="section" id="day2">
+        <div class="section-header">
+            <div class="day-label">第二天</div>
+            <h2>禅城深度游 · 岭南文脉</h2>
+            <p>岭南园林 → 千年祖庙 → 骑楼美食 → 五百年窑火</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <div class="timeline-time">09:00</div>
+                <div class="timeline-title">从酒店出发</div>
+                <div class="timeline-desc">从祖庙商圈酒店出发，步行前往梁园，沿途可感受禅城老城区的市井气息。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚶</div>
+                <div class="timeline-time">09:00 — 09:15</div>
+                <div class="timeline-title">步行前往梁园</div>
+                <div class="timeline-desc">从祖庙商圈步行约1公里，穿过松风路老街区，约15分钟可达。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M8 2a3 3 0 0 0-3 3c0 2.5 3 7 3 7s3-4.5 3-7a3 3 0 0 0-3-3zm0 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    约 1 km · 步行约 15 分钟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">2</div>
+                <div class="timeline-time">09:15 — 10:15</div>
+                <div class="timeline-title">梁园</div>
+                <div class="timeline-desc">广东四大名园之一，始建于清嘉庆年间，由梁氏家族历时四十余年建成。园内布局精妙，住宅、祠堂、园林浑然一体，以"秀水、奇石、名帖"三绝著称。十二石斋、群星草堂、汾江草庐等景点不容错过。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区松风路先锋古道93号</span>
+                    <span>🎫 门票 ¥10（周六免费）</span>
+                    <span>🕐 09:00-17:00</span>
+                    <span>📞 0757-82237051</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚶</div>
+                <div class="timeline-time">10:15 — 10:30</div>
+                <div class="timeline-title">步行前往祖庙</div>
+                <div class="timeline-desc">沿松风路南下，经莲花路转入祖庙路，步行约1.5公里。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M8 2a3 3 0 0 0-3 3c0 2.5 3 7 3 7s3-4.5 3-7a3 3 0 0 0-3-3zm0 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    约 1.5 km · 步行约 15 分钟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <div class="timeline-time">10:30 — 11:45</div>
+                <div class="timeline-title">佛山祖庙</div>
+                <div class="timeline-desc">始建于北宋元丰年间（1078-1085年），被誉为"东方民间艺术之宫"。庙内三雕二塑（砖雕、木雕、石雕、陶塑、灰塑）精美绝伦，灵应祠、万福台、黄飞鸿纪念馆、叶问堂均为必看。每日有武术和醒狮表演。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区祖庙路21号</span>
+                    <span>🎫 门票 ¥20</span>
+                    <span>🕐 08:30-18:00</span>
+                    <span>📞 0757-82293723</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚶</div>
+                <div class="timeline-time">11:45 — 12:00</div>
+                <div class="timeline-title">步行前往岭南天地</div>
+                <div class="timeline-desc">岭南天地紧邻祖庙，步行2分钟即达。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M8 2a3 3 0 0 0-3 3c0 2.5 3 7 3 7s3-4.5 3-7a3 3 0 0 0-3-3zm0 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    约 200 m · 步行约 2 分钟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">4</div>
+                <div class="timeline-time">12:00 — 14:00</div>
+                <div class="timeline-title">岭南天地 · 午餐</div>
+                <div class="timeline-desc">佛山最繁华的文旅商业街区，由22幢清代至民国时期的岭南镬耳屋、青砖大屋改造而成。石板街巷纵横交错，古建筑与现代商业完美融合。推荐餐厅：民信老铺（双皮奶）、顺德杨廷记（古法盐焗鸡）、吴系茶餐厅、行运楼等。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区祖庙东华里片区人民路南</span>
+                    <span>🕐 全天开放（各店铺营业时间不同）</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚶</div>
+                <div class="timeline-time">14:00 — 14:10</div>
+                <div class="timeline-title">步行前往燎原路</div>
+                <div class="timeline-desc">从岭南天地出发，沿福贤路向北步行。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M8 2a3 3 0 0 0-3 3c0 2.5 3 7 3 7s3-4.5 3-7a3 3 0 0 0-3-3zm0 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    约 500 m · 步行约 8 分钟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">5</div>
+                <div class="timeline-time">14:10 — 14:50</div>
+                <div class="timeline-title">燎原路美食街</div>
+                <div class="timeline-desc">佛山最地道的小吃街，老字号云集。推荐：辉记甜品店（猪脚姜、芝麻糊）、君临餐厅（炸云吞、艇仔粥）、北香园饺子馆（煎饺）、燎原路牛杂。穿插在骑楼老街中，感受佛山最真实的烟火气。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区燎原路（福贤路至市东下路段）</span>
+                    <span>🕐 各店铺营业时间不同，一般10:00-22:00</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚗</div>
+                <div class="timeline-time">14:50 — 15:05</div>
+                <div class="timeline-title">打车前往南风古灶</div>
+                <div class="timeline-desc">从燎原路出发，沿市东下路南下，经季华路向西，前往石湾镇。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M12.5 2A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.25a.75.75 0 0 1 0-1.5h1.25a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1.25a.75.75 0 0 1 0 1.5H3.5A1.5 1.5 0 0 1 2 9.5v-6A1.5 1.5 0 0 1 3.5 2h9zM5.75 7.5a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zm4.5 0a.75.75 0 0 1 0 1.5.75.75 0 0 1 0-1.5zM5.72 13.78a.75.75 0 0 1 0-1.06l.97-.97H3.75a.75.75 0 0 1 0-1.5h2.94l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0z"/></svg>
+                    约 4 km · 打车约 12 分钟 · 约 ¥15
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">6</div>
+                <div class="timeline-time">15:05 — 16:15</div>
+                <div class="timeline-title">南风古灶</div>
+                <div class="timeline-desc">建于明正德年间（1506年），是世界上现存最古老、连续使用500多年至今仍在使用的柴烧龙窑，被誉为"陶瓷活化石"。景区内古灶榕风、马槽瀑布、百万梦想墙、玩陶厅等景点丰富，可亲手体验陶艺制作（约¥30/人）。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区石湾镇高庙路6号</span>
+                    <span>🎫 门票 ¥25</span>
+                    <span>🕐 08:30-17:00</span>
+                    <span>📞 0757-82711798</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot transit">🚶</div>
+                <div class="timeline-time">16:15 — 16:20</div>
+                <div class="timeline-title">步行前往陶瓷博物馆</div>
+                <div class="timeline-desc">陶瓷博物馆与南风古灶仅一墙之隔，步行1分钟即达。</div>
+                <div class="transit-info">
+                    <svg viewBox="0 0 16 16"><path d="M8 2a3 3 0 0 0-3 3c0 2.5 3 7 3 7s3-4.5 3-7a3 3 0 0 0-3-3zm0 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    约 100 m · 步行约 1 分钟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">7</div>
+                <div class="timeline-time">16:20 — 17:30</div>
+                <div class="timeline-title">广东石湾陶瓷博物馆</div>
+                <div class="timeline-desc">广东首家以陶瓷文化为主题的行业博物馆，系统展示石湾陶塑五千年历史。馆藏从新石器时代到当代的石湾陶艺精品，包括石湾公仔、艺术陶、日用陶等。动态展示区可观看陶艺大师现场创作。</div>
+                <div class="timeline-meta">
+                    <span>📍 禅城区石湾镇高庙路5号</span>
+                    <span>🎫 免费</span>
+                    <span>🕐 09:00-17:00（周一闭馆）</span>
+                    <span>📞 0757-82260798</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <div class="section" style="padding-bottom:40px;">
+        <div class="section-header">
+            <h2>第二天行程地图</h2>
+            <p>点击标记查看地点详情，可缩放拖拽浏览</p>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div class="map-wrapper">
+            <div id="map2"></div>
+        </div>
+    </div>
+
+    <div class="transit-plan">
+        <div class="transit-plan-title">交通方案对比</div>
+        <p style="text-align:center;font-size:13px;color:#aeaeb2;margin:-12px 0 20px;letter-spacing:-0.06px;">点击展开查看详细路线</p>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">1</span> 酒店 → <span class="num">2</span> 梁园
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚶</span><span class="mode">步行</span>
+                            <span class="detail">
+                                <span class="station-line">祖庙路 → 莲花路 → 松风路</span>，全程约 1km<br>
+                                推荐步行，沿途可感受禅城老街风貌
+                            </span>
+                            <span class="highlight">约15分钟 · 免费</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">祖庙路 → 莲花路 → 松风路</span>，全程约 1.2km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥10</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥9</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">5分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">2</span> 梁园 → <span class="num">3</span> 祖庙
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚶</span><span class="mode">步行</span>
+                            <span class="detail">
+                                <span class="station-line">松风路 → 莲花路 → 祖庙路</span>，全程约 1.5km<br>
+                                推荐步行，沿途经过莲花路骑楼老街
+                            </span>
+                            <span class="highlight">约15分钟 · 免费</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">松风路 → 亲仁路 → 祖庙路</span>，全程约 1.5km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥10</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥9</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">5分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">3</span> 祖庙 → <span class="num">4</span> 岭南天地
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚶</span><span class="mode">步行</span>
+                            <span class="detail">
+                                <span class="station-line">祖庙正门出 → 东华里片区</span><br>
+                                岭南天地紧邻祖庙，仅隔一条小巷，步行即达
+                            </span>
+                            <span class="highlight">约2分钟 · 免费</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">4</span> 岭南天地 → <span class="num">5</span> 燎原路
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚶</span><span class="mode">步行</span>
+                            <span class="detail">
+                                <span class="station-line">岭南天地北口 → 福贤路 → 燎原路</span>，全程约 500m<br>
+                                推荐步行，沿途可逛福贤路骑楼老店
+                            </span>
+                            <span class="highlight">约8分钟 · 免费</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">5</span> 燎原路 → <span class="num">6</span> 南风古灶
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚗</span><span class="mode">打车</span>
+                            <span class="detail">
+                                <span class="station-line">燎原路 → 市东下路 → 季华路 → 江湾三路 → 高庙路</span>，全程约 4km<br>
+                                <div class="price-tiers">
+                                    <span class="price-tier">🚕 出租车 <em>≈¥15</em></span>
+                                    <span class="price-tier">🚗 滴滴快车 <em>≈¥14</em></span>
+                                    <span class="price-tier">🚙 滴滴特快 <em>≈¥20</em></span>
+                                    <span class="price-tier">🖤 滴滴专车 <em>≈¥28</em></span>
+                                </div>
+                            </span>
+                            <span class="highlight">12分钟</span>
+                        </div>
+                        <div class="transit-row">
+                            <span class="icon">🚌</span><span class="mode">公交</span>
+                            <span class="detail">
+                                <span class="station-line">120路 / 134路 / 143路 / 150路 / 226路</span>，福贤路口站 → 南风古灶站<br>
+                                直达，约 8 站
+                            </span>
+                            <span class="highlight">约25分钟 · ¥2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transit-card">
+            <div class="transit-card-header">
+                <span class="num">6</span> 南风古灶 → <span class="num">7</span> 陶瓷博物馆
+                <span class="arrow">▾</span>
+            </div>
+            <div class="transit-card-body">
+                <div class="transit-card-body-inner">
+                    <div class="transit-options">
+                        <div class="transit-row">
+                            <span class="icon">🚶</span><span class="mode">步行</span>
+                            <span class="detail">
+                                <span class="station-line">南风古灶出口 → 高庙路 → 陶瓷博物馆</span><br>
+                                两馆仅一墙之隔，出门即到
+                            </span>
+                            <span class="highlight">约1分钟 · 免费</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
     <div class="divider"><hr></div>
 
     <footer class="footer">
@@ -1042,8 +1384,20 @@
 
     <script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script>
+        function switchDay(day) {
+            var tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(function(t) { t.classList.remove('active'); });
+            tabs[day - 1].classList.add('active');
+            document.getElementById('day1-wrap').style.display = day === 1 ? '' : 'none';
+            document.getElementById('day2-wrap').style.display = day === 2 ? '' : 'none';
+            setTimeout(function() {
+                if (day === 1) { map1.invalidateSize(); }
+                if (day === 2) { map2.invalidateSize(); }
+            }, 100);
+        }
+
         (function() {
-            var locations = [
+            var locations1 = [
                 { name: '佛山站', lat: 23.0481, lng: 113.0975, desc: '禅城区文昌西路12号<br>广湛高铁佛山站', time: '10:30' },
                 { name: '禅城区酒店', lat: 23.028, lng: 113.117, desc: '禅城区祖庙商圈<br>放置行李、办理入住', time: '10:30-10:50' },
                 { name: '香江饭店', lat: 22.872, lng: 113.210, desc: '顺德区伦教人民路食街3号<br>中华餐饮名店 · 顺德老字号', time: '11:30-13:00' },
@@ -1052,23 +1406,52 @@
                 { name: '横店纷腾影城', lat: 23.015, lng: 113.105, desc: '禅城区佛山大道中81号王府井紫薇港5层<br>《奥德赛》20:50-23:42', time: '20:50-23:42' }
             ];
 
-            var map = L.map('map', {
+            var map1 = L.map('map', {
                 center: [22.90, 113.18],
                 zoom: 11,
                 zoomControl: true,
                 scrollWheelZoom: true
             });
 
-            var tileLayer = L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-                attribution: '© 高德地图',
-                maxZoom: 18
-            });
-            tileLayer.addTo(map);
-            tileLayer.on('tileerror', function() {
-                tileLayer.setUrl('https://tile.openstreetmap.de/{z}/{x}/{y}.png');
+            initMapTile(map1);
+            drawLocations(map1, locations1);
+            var routeLabels1 = ['约6km · 16分钟', '约25km · 35分钟', '约9km · 18分钟', '约3.2km · 9分钟', '约32km · 40分钟'];
+            drawRoutes(map1, locations1, routeLabels1);
+
+            var locations2 = [
+                { name: '禅城区酒店', lat: 23.028, lng: 113.117, desc: '禅城区祖庙商圈<br>出发地点', time: '09:00' },
+                { name: '梁园', lat: 23.034, lng: 113.106, desc: '禅城区松风路先锋古道93号<br>广东四大名园之一 · 门票¥10', time: '09:15-10:15' },
+                { name: '佛山祖庙', lat: 23.030, lng: 113.113, desc: '禅城区祖庙路21号<br>东方民间艺术之宫 · 门票¥20', time: '10:30-11:45' },
+                { name: '岭南天地', lat: 23.029, lng: 113.114, desc: '禅城区祖庙东华里片区<br>文旅商业街区 · 午餐', time: '12:00-14:00' },
+                { name: '燎原路美食街', lat: 23.034, lng: 113.119, desc: '禅城区燎原路<br>佛山地道小吃街', time: '14:10-14:50' },
+                { name: '南风古灶', lat: 22.993, lng: 113.085, desc: '禅城区石湾镇高庙路6号<br>五百年龙窑 · 门票¥25', time: '15:05-16:15' },
+                { name: '陶瓷博物馆', lat: 22.992, lng: 113.084, desc: '禅城区石湾镇高庙路5号<br>免费 · 石湾陶塑五千年', time: '16:20-17:30' }
+            ];
+
+            var map2 = L.map('map2', {
+                center: [23.010, 113.100],
+                zoom: 13,
+                zoomControl: true,
+                scrollWheelZoom: true
             });
 
-            var numberIcon = function(num) {
+            initMapTile(map2);
+            drawLocations(map2, locations2);
+            var routeLabels2 = ['约1km · 15分钟', '约1.5km · 15分钟', '约200m · 2分钟', '约500m · 8分钟', '约4km · 12分钟', '约100m · 1分钟'];
+            drawRoutes(map2, locations2, routeLabels2);
+
+            function initMapTile(map) {
+                var tileLayer = L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+                    attribution: '© 高德地图',
+                    maxZoom: 18
+                });
+                tileLayer.addTo(map);
+                tileLayer.on('tileerror', function() {
+                    tileLayer.setUrl('https://tile.openstreetmap.de/{z}/{x}/{y}.png');
+                });
+            }
+
+            function numberIcon(num) {
                 return L.divIcon({
                     className: 'custom-marker',
                     html: '<div style="background:#0071e3;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,sans-serif;box-shadow:0 2px 8px rgba(0,113,227,0.3);border:2px solid #fff;">' + num + '</div>',
@@ -1076,62 +1459,51 @@
                     iconAnchor: [14, 14],
                     popupAnchor: [0, -18]
                 });
-            };
-
-            locations.forEach(function(loc, i) {
-                var marker = L.marker([loc.lat, loc.lng], {
-                    icon: numberIcon(i + 1)
-                }).addTo(map);
-
-                marker.bindTooltip(loc.name, {
-                    permanent: true,
-                    direction: 'top',
-                    offset: [0, -8],
-                    className: 'marker-label'
-                });
-
-                marker.bindPopup(
-                    '<strong>' + loc.name + '</strong>' +
-                    loc.desc +
-                    '<br><span style="color:#86868b;font-size:12px;">⏱ ' + loc.time + '</span>'
-                );
-            });
-
-            var routeLabels = ['约6km · 16分钟', '约25km · 35分钟', '约9km · 18分钟', '约3.2km · 9分钟', '约32km · 40分钟'];
-
-            for (var i = 0; i < locations.length - 1; i++) {
-                var segment = [[locations[i].lat, locations[i].lng], [locations[i + 1].lat, locations[i + 1].lng]];
-                L.polyline(segment, {
-                    color: '#0071e3', weight: 3, opacity: 0.6,
-                    dashArray: '8, 6', lineCap: 'round'
-                }).addTo(map);
-
-                var midLat = (segment[0][0] + segment[1][0]) / 2;
-                var midLng = (segment[0][1] + segment[1][1]) / 2;
-                L.marker([midLat, midLng], {
-                    icon: L.divIcon({
-                        className: 'route-label',
-                        html: '<div style="background:#fff;padding:2px 8px;border-radius:10px;font-size:10px;color:#6e6e73;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-0.04px;">' + routeLabels[i] + '</div>',
-                        iconSize: [0, 0],
-                        iconAnchor: [0, 0]
-                    })
-                }).addTo(map);
             }
 
-            var allCoords = locations.map(function(l) { return [l.lat, l.lng]; });
-            map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
-
-            document.querySelectorAll('.nav-tab').forEach(function(tab, i) {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
-                    tab.classList.add('active');
-                    var target = i === 0 ? '#day1' : '#day2';
-                    document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+            function drawLocations(map, locations) {
+                locations.forEach(function(loc, i) {
+                    var marker = L.marker([loc.lat, loc.lng], {
+                        icon: numberIcon(i + 1)
+                    }).addTo(map);
+                    marker.bindTooltip(loc.name, {
+                        permanent: true,
+                        direction: 'top',
+                        offset: [0, -8],
+                        className: 'marker-label'
+                    });
+                    marker.bindPopup(
+                        '<strong>' + loc.name + '</strong>' +
+                        loc.desc +
+                        '<br><span style="color:#86868b;font-size:12px;">⏱ ' + loc.time + '</span>'
+                    );
                 });
-            });
+            }
+
+            function drawRoutes(map, locations, routeLabels) {
+                for (var i = 0; i < locations.length - 1; i++) {
+                    var segment = [[locations[i].lat, locations[i].lng], [locations[i + 1].lat, locations[i + 1].lng]];
+                    L.polyline(segment, {
+                        color: '#0071e3', weight: 3, opacity: 0.6,
+                        dashArray: '8, 6', lineCap: 'round'
+                    }).addTo(map);
+                    var midLat = (segment[0][0] + segment[1][0]) / 2;
+                    var midLng = (segment[0][1] + segment[1][1]) / 2;
+                    L.marker([midLat, midLng], {
+                        icon: L.divIcon({
+                            className: 'route-label',
+                            html: '<div style="background:#fff;padding:2px 8px;border-radius:10px;font-size:10px;color:#6e6e73;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-0.04px;">' + routeLabels[i] + '</div>',
+                            iconSize: [0, 0],
+                            iconAnchor: [0, 0]
+                        })
+                    }).addTo(map);
+                }
+                var allCoords = locations.map(function(l) { return [l.lat, l.lng]; });
+                map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
+            }
 
             setTimeout(function() {
-                map.invalidateSize();
+                map1.invalidateSize();
             }, 300);
 
             document.querySelectorAll('.transit-card').forEach(function(card) {
