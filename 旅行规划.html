@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佛山旅行规划 - 英皇方案</title>
+    <style>
+        :root {
+            --bg: #f5f0eb;
+            --card-bg: #ffffff;
+            --accent: #c0392b;
+            --accent-light: #e74c3c;
+            --text: #2c3e50;
+            --text-secondary: #5d6d7e;
+            --border: #e0d5c7;
+            --tag-bg: #fdf2e9;
+            --tag-text: #b9770e;
+            --timeline-line: #d5c4b1;
+            --green: #27ae60;
+            --green-bg: #eafaf1;
+            --blue: #2980b9;
+            --blue-bg: #eaf2f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: #fff;
+            padding: 48px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(231, 76, 60, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 50%, rgba(241, 196, 15, 0.06) 0%, transparent 60%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-2%, 2%); }
+        }
+
+        .hero h1 {
+            font-size: 2.4em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-left: 14px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* 概览卡片 */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .overview-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 16px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .overview-card .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .overview-card .label {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* 时间轴 */
+        .timeline {
+            position: relative;
+            padding-left: 36px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--timeline-line);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 26px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-item.highlight::before {
+            background: var(--accent-light);
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.25);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(231, 76, 60, 0.1); }
+        }
+
+        .timeline-time {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 4px;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            font-size: 0.92em;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.78em;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-top: 6px;
+        }
+
+        .tag.food {
+            background: var(--tag-bg);
+            color: var(--tag-text);
+        }
+
+        .tag.scenic {
+            background: var(--green-bg);
+            color: #1e8449;
+        }
+
+        .tag.movie {
+            background: #f4ecf7;
+            color: #7d3c98;
+        }
+
+        .tag.hotel {
+            background: var(--blue-bg);
+            color: #1f618d;
+        }
+
+        .tag.transport {
+            background: #fdedec;
+            color: #b03a2e;
+        }
+
+        .tag.tip {
+            background: #fef9e7;
+            color: #7d6608;
+        }
+
+        /* 提示卡片 */
+        .tip-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .tip-card h3 {
+            font-size: 1em;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .tip-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tip-card li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.92em;
+        }
+
+        .tip-card li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8em;
+            top: 5px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fdf2e9, #fef9e7);
+            border: 1px solid #f0c78e;
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin-top: 16px;
+        }
+
+        .highlight-box h3 {
+            color: #b9770e;
+            margin-bottom: 8px;
+        }
+
+        .highlight-box p {
+            color: #7d6608;
+            font-size: 0.92em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.6em;
+            }
+            .overview-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .timeline {
+                padding-left: 28px;
+            }
+            .timeline-item::before {
+                left: -20px;
+                width: 10px;
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>🏯 佛山一日旅行规划</h1>
+        <div class="subtitle">方案一：英皇酒店 · 文化美食观影线</div>
+        <div class="badge">🎬 含《奥德赛》观影</div>
+    </div>
+
+    <div class="container">
+
+        <!-- 概览 -->
+        <div class="section">
+            <div class="section-title"><span class="icon">📋</span> 行程概览</div>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="value">4</div>
+                    <div class="label">核心景点/活动</div>
+                </div>
+                <div class="overview-card">
+                    <div class="value">~9h</div>
+                    <div class="label">总行程时长</div>
+                </div>
+                <div class="overview-card">
+                    <div class="value">3</div>
+                    <div class="label">顿美食体验</div>
+                </div>
+                <div class="overview-card">
+                    <div class="value">🎬</div>
+                    <div class="label">IMAX+VIP 观影</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 时间轴 -->
+        <div class="section">
+            <div class="section-title"><span class="icon">⏱️</span> 详细时间轴</div>
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-time">上午 · 抵达佛山</div>
+                    <div class="timeline-title">🚆 出站 → 英皇酒店</div>
+                    <div class="timeline-desc">抵达佛山后前往英皇酒店办理入住，放下行李轻装上阵。</div>
+                    <span class="tag hotel">酒店</span>
+                    <span class="tag transport">交通</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">上午 · 约 11:00 - 12:00</div>
+                    <div class="timeline-title">🍳 地道 Brunch</div>
+                    <div class="timeline-desc">在酒店周边寻觅地道佛山早午餐，感受本地烟火气。推荐肠粉、生滚粥、双皮奶等经典佛山味道。</div>
+                    <span class="tag food">美食</span>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">中午 · 12:00 出发</div>
+                    <div class="timeline-title">🚗 出发前往清晖园 & 顺峰山</div>
+                    <div class="timeline-desc">
+                        来回车程约 <strong>1.5 小时</strong>（预留 2 小时），游玩时间约 <strong>3 小时</strong>。<br>
+                        清晖园 — 广东四大名园之一，岭南园林代表作；<br>
+                        顺峰山公园 — 佛山城市绿肺，湖光山色尽收眼底。
+                    </div>
+                    <span class="tag scenic">景点</span>
+                    <span class="tag transport">往返 2h</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">下午 · 约 15:00</div>
+                    <div class="timeline-title">🏙️ 清晖园 & 顺峰山游览中</div>
+                    <div class="timeline-desc">徜徉于岭南园林的亭台楼阁之间，感受古典与自然的交融。顺峰山登高望远，俯瞰城市风光。</div>
+                    <span class="tag scenic">游览 3h</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">下午 · 约 15:00 - 16:30</div>
+                    <div class="timeline-title">🚗 返程回英皇影院</div>
+                    <div class="timeline-desc">从顺峰山/清晖园返回英皇，预留充裕时间，赶在 17:00 前抵达影院。</div>
+                    <span class="tag transport">返程</span>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">下午 · 17:00 🎯 黄金场次</div>
+                    <div class="timeline-title">🎬 英皇影院 ·《奥德赛》IMAX + VIP</div>
+                    <div class="timeline-desc">
+                        <strong>为什么选 17:00 而不是 22:00？</strong><br>
+                        ▸ 22:00 场次屏幕非 IMAX，观影体验大打折扣<br>
+                        ▸ 无法享受 VIP 厅的舒适体验<br>
+                        ▸ 17:00 黄金场次 = IMAX 巨幕 + VIP 尊享，完美
+                    </div>
+                    <span class="tag movie">IMAX</span>
+                    <span class="tag movie">VIP</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">傍晚 · 观影期间</div>
+                    <div class="timeline-title">🍗 鸡条观影 — 汉堡王</div>
+                    <div class="timeline-desc">影院附近就有汉堡王！买上鸡条/鸡翅带进影院，边看《奥德赛》边享受炸鸡，仪式感拉满 🍿</div>
+                    <span class="tag food">汉堡王</span>
+                    <span class="tag movie">鸡条观影</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">晚上 · 约 21:00</div>
+                    <div class="timeline-title">🍽️ 晚餐时间</div>
+                    <div class="timeline-desc">电影结束后，在附近寻一家地道佛山餐厅享用晚餐，为一天画上完美句号。</div>
+                    <span class="tag food">晚餐</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 影院选择分析 -->
+        <div class="section">
+            <div class="section-title"><span class="icon">🎯</span> 影院场次选择分析</div>
+            <div class="tip-card">
+                <h3>为什么不选 22:00 场次？</h3>
+                <ul>
+                    <li>22:00 场次屏幕<strong>非 IMAX</strong>，画质和沉浸感大打折扣</li>
+                    <li>无法体验 <strong>VIP 厅</strong>，座位舒适度、服务品质均不如</li>
+                    <li>深夜观影结束后时间过晚，影响晚餐和休息</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h3>✅ 推荐：17:00 黄金场次</h3>
+                <p>IMAX 巨幕 + VIP 尊享体验，观影结束正好 19:00 左右，时间从容，晚餐不慌张。且影院旁有汉堡王，完美实现「鸡条观影」！</p>
+            </div>
+        </div>
+
+        <!-- 小贴士 -->
+        <div class="section">
+            <div class="section-title"><span class="icon">💡</span> 出行小贴士</div>
+            <div class="tip-card">
+                <ul>
+                    <li>清晖园 & 顺峰山往返预留 <strong>2 小时</strong>车程，建议打车或自驾</li>
+                    <li>两个景点相邻，3 小时游览时间充裕，不赶不忙</li>
+                    <li>提前在英皇 APP 或猫眼上锁定 17:00 IMAX 场次座位</li>
+                    <li>汉堡王鸡条/鸡翅可外带，影院一般允许携带（建议低调）</li>
+                    <li>佛山 9 月天气偏热，注意防晒补水</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        佛山旅行规划 · 英皇方案 · 2026
+    </footer>
+
+</body>
+</html>
